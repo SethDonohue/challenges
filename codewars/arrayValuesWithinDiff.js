@@ -15,3 +15,18 @@ class GroupByDifference {
     return results;
   }
 }
+
+// clean solution, does same as above
+
+class GroupByDifference {
+  constructor(numbers) {
+    this.numbers = numbers;
+  }
+
+  find(range) {
+    return this.numbers
+      .slice()
+      .sort((a, b) => a - b)
+      .filter((n, i, a) => a[i + 1] - n <= range || n - a[i - 1] <= range);
+  }
+}
