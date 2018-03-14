@@ -1,7 +1,5 @@
 function listSquared(m, n) {
   const results = [];
-  // if m === n return []
-  
   // for every number from m to n
   for (let i = m; i <= n; i++) {
     let squaredDivisorSum = 0;
@@ -14,7 +12,7 @@ function listSquared(m, n) {
     }
     // if sum is a square
     if (Math.sqrt(squaredDivisorSum) % 1 === 0) {
-      // push the number and the sum to an array of two elements, then push to final array
+      // create array with number and the sum, push to final array
       results.push([i, squaredDivisorSum]);
     }
   }
