@@ -14,3 +14,12 @@ function firstNonRepeatingLetter(str) {
   if (filterMap.length === 0) return '';
   return originalStr[map[filterMap[0]]];
 }
+
+// interesting solition that searches the str from both ends
+function firstNonRepeatingLetter(str) {
+  let temp = str.toLowerCase();
+  for (let i = 0; i < temp.length; i++)
+    if (temp.indexOf(temp[i]) === temp.lastIndexOf(temp[i]))
+      return str[i];
+  return "";
+}
