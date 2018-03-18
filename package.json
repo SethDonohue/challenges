@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/SethDonohue/code-challenges.git"
   },
+  "scripts": {
+	  "test":"jest"
+  },
   "author": "Seth Donohue",
   "devDependencies": {
     "babel-eslint": "^8.2.2",
@@ -14,6 +17,7 @@
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.6.1"
+    "eslint-plugin-react": "^7.6.1",
+    "jest": "^22.4.2"
   }
 }
