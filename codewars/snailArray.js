@@ -22,13 +22,17 @@ const snail = (array) => {
   // const map = {};
 
   const _rowElementPusher = (currentRow, startColumn, endColumn) => {
+    console.log('============ RowPusher Called ============');
     // slice from original row the elements we need to push...
-    const subArray = array[currentRow].slice(startColumn, endColumn + 1);
-    console('ROW Pusher subArray: ', subArray);
+    let subArray = [];
     
     if (endColumn < startColumn) { // slicing right to left, REVERSE order...
+      subArray = array[currentRow].slice(endColumn, startColumn + 1);      
       subArray.reverse();
       console.log('subArray REVERSED: ', subArray);
+    } else {
+      subArray = array[currentRow].slice(startColumn, endColumn + 1);      
+      console.log('subArray: ', subArray);
     }
     // ... and then push them to result array
     for (let i = 0; i < subArray.length; i++) {
@@ -38,6 +42,7 @@ const snail = (array) => {
   };
 
   const _columnElementPusher = (currentColumn, startRow, endRow) => {
+    console.log('============ ColumnPusher Called ============');
     // take each element from each row in column and push to result,
     // starting with rowTop and ending with rowBottom
     if (endRow > startRow) {
@@ -48,11 +53,20 @@ const snail = (array) => {
         console.log('COLUMN Top-Down Pushed Element: ', array[i][currentColumn]);
       }
     } else {
-      for (let i = endRow; i >= startRow; i--) { // pushing from bottom row to top row
+      if (array.length % 2 === 0) {
+        for (let i = startRow; i >= endRow; i--) { // pushing from bottom row to top row
         // take row (which is i) and column( which is currentColumn)
         // to retreive specific element and push it to result
-        result.push(array[i][currentColumn]);
-        console.log('COLUMN Bottom-Up Pushed Element: ', array[i][currentColumn]);
+          result.push(array[i][currentColumn]);
+          console.log('COLUMN Bottom-Up Pushed Element: ', array[i][currentColumn]);
+        }
+      } else {
+        for (let i = endRow; i >= startRow; i--) { // pushing from bottom row to top row
+          // take row (which is i) and column( which is currentColumn)
+          // to retreive specific element and push it to result
+          result.push(array[i][currentColumn]);
+          console.log('COLUMN Bottom-Up Pushed Element: ', array[i][currentColumn]);
+        }
       }
     }
   };
@@ -63,54 +77,30 @@ const snail = (array) => {
   // Check for NON square array
   if (!(height === width)) return null;
   
-  // test code
-  let counter = 0;
-
-  while (counter < 9) { // columnBack - columnFront >= 1 && rowBottom - rowTop >= 1
+  while (rowBottom - rowTop >= 0 && columnBack - columnFront >= 0) {
     // Take Top Row and push to array, increment rowTop
     _rowElementPusher(rowTop, columnFront, columnBack);
-    console.log('+++rowTop incremented+++');
     rowTop++;
-
+    console.log('+++rowTop incremented to:', rowTop);
+    // add check to see if rowTop = rowBottom and colback = colFront
+    if (rowBottom > rowTop) {
     // Take Back Column and push to array, decrement columnBack
-    _columnElementPusher(columnBack, rowTop, rowBottom);
-    console.log('---columnBack decremented---');
-    columnBack--;
+      _columnElementPusher(columnBack, rowTop, rowBottom);
+      columnBack--;
+      console.log('---columnBack decremented to:', columnBack);
     
-    // Take Bottom Row and push to array, decrement rowBottom
-    _rowElementPusher(rowBottom, columnBack, columnFront);
-    console.log('---rowBottom decremented---');
-    rowBottom--;
+      // Take Bottom Row and push to array, decrement rowBottom
+      _rowElementPusher(rowBottom, columnBack, columnFront);
+      rowBottom--;
+      console.log('---rowBottom decremented to:', rowBottom);
     
-    // Take Front Column and push to array, increment columnFront
-    _columnElementPusher(columnFront, rowBottom, rowTop);   
-    console.log('+++columnFront incremented+++');
-    columnFront++;
-
-    // test code
-    counter++;
+      // Take Front Column and push to array, increment columnFront
+      _columnElementPusher(columnFront, rowBottom, rowTop);   
+      columnFront++;
+      console.log('+++columnFront incremented to: ', columnFront);
+    }    
   }
-
-  // PUSH first array to result, special case?
-  // const _elementGrabber = (currentRow, currentColumn) => {
-  //   if (row === 0) _rowElementPusher(array[0]);
-
-  // }
-
-
-  // Brute force
-  // push first 2d array, element[0] of main array, to new array, this covers the top row
-  // push the last element of each "row" until we hit the last element
-  // push 2nd to last element of last 2d array in reverse order
-  // push first element of each 2d array except the top and bottom arrays ( keep track of which arrasy are completely read/pushed with a map?) 
-  // push elements of second 2d array (second row) except the last & first element
-  // push 2nd to last elements of rows except 1st 2nd and last rows
-  // push last row -1 elements in  reverse order to first index +1
-
-  // need to kep track of what 'row' is being pushed, and which ones are complete...
-  // need to kee  p track of what 'column' is being pushed and which ones are complete...
-
-  return [];
+  return result;
 };
 
 // test code
@@ -119,8 +109,24 @@ const array = [
   [4, 5, 6],
   [7, 8, 9],
 ];
+// console.log(snail(array));
 
-snail(array);
+const arrayTwo = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16],
+];
+// console.log(snail(arrayTwo));
+
+const arrayThree = [
+  [1, 2, 3, 4, 5],
+  [6, 7, 8, 9, 10],
+  [11, 12, 13, 14, 15],
+  [16, 17, 18, 19, 20],
+  [21, 22, 23, 24, 25],
+];
+// console.log(snail(arrayThree));
 
 // export default snail;
 module.exports = snail;
