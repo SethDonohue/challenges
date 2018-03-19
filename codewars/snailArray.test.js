@@ -1,4 +1,4 @@
-const snail = require('./snailArray');
+const snail = require('./snailArraySecond');
 
 const array = [
   [1, 2, 3],
