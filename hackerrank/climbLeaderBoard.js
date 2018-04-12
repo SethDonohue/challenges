@@ -3,7 +3,7 @@
 /*
  * Complete the climbingLeaderboard function below.
  */
-function climbingLeaderboard(scores, alice) {
+function climbingLeaderboard(scores, player) {
   const results = [];
     
   // IIFE arrow to remove duplicates from scores   
@@ -12,12 +12,12 @@ function climbingLeaderboard(scores, alice) {
   // set j index outside of first loop so that it can be updated   
   let j = uniqueScores.length;
   console.log('Ranks: ', j);
-  console.log('Played Games: ', alice.length);
+  console.log('Played Games: ', player.length);
     
-  // for each of alice's scores
-  for (let i = 0; i < alice.length; i++) {
+  // for each of player's scores
+  for (let i = 0; i < player.length; i++) {
     // if her score is highest, push rank 1 to results
-    if (alice[i] > uniqueScores[0]) {
+    if (player[i] > uniqueScores[0]) {
       results.push(1);
             
       // check against other scores and push appropriate rank to results
@@ -26,7 +26,7 @@ function climbingLeaderboard(scores, alice) {
       while (j >= 0) {
         const rank = j + 1;
         // if tied, push and break the loop
-        if (alice[i] === uniqueScores[j]) {
+        if (player[i] === uniqueScores[j]) {
           // set j to rank above this tied rank so we don't check the scores below this from now on
           j = rank - 1;
           // console.log(j, rank);
@@ -35,7 +35,7 @@ function climbingLeaderboard(scores, alice) {
         }
 
         // if less than score, push and break the loop
-        if (alice[i] < uniqueScores[j]) {
+        if (player[i] < uniqueScores[j]) {
           // set j to rank so we don't check the scores below this from now on
           j = rank;
           // console.log(j, rank);
