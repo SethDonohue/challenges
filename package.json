@@ -19,5 +19,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.6.1",
     "jest": "^22.4.3"
+  },
+  "dependencies": {
+    "babel-preset-stage-2": "^6.24.1"
   }
 }
