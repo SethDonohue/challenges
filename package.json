@@ -7,7 +7,8 @@
     "url": "git+https://github.com/SethDonohue/code-challenges.git"
   },
   "scripts": {
-    "test": "jest -i --coverage"
+    "test": "jest -i --coverage",
+    "testWatch": "jest -i --coverage --watch"
   },
   "author": "Seth Donohue",
   "devDependencies": {
