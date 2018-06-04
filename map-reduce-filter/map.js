@@ -4,6 +4,7 @@
 // provided function on every element in the calling array.
 
 const map = (array, callback) => {
+  if (typeof array !== 'object') throw Error('Must use an array as first argument.');
   const result = [];
   for (let i = 0; i < array.length; i++) {
     result.push(callback(array[i]));
