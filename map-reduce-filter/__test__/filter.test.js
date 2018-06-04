@@ -1,4 +1,4 @@
-const filter = require('../filter');
+const Array = require('../map-reduce-filter');
 
 describe('FILTER', () => {
   test('Applies a callback to each element and if callback is true pushes the element to a new array and returns the resulting array with the filtered elements', () => {
@@ -7,15 +7,15 @@ describe('FILTER', () => {
     const strInput = ['hi', 'hello', 'jefhsakjfksahf', 'world', '10'];
     const strNumInput = ['hi', 20, 'hello', 'jefhsakjfksahf', 'world', 10];
 
-    expect(filter(input, ele => ele < 40)).toEqual(output);
-    expect(filter(input, ele => ele >= 40)).toEqual([40, 50, 60]);
+    expect(input.myFilter(ele => ele < 40)).toEqual(output);
+    expect(input.myFilter(ele => ele >= 40)).toEqual([40, 50, 60]);
 
 
-    expect(filter(strInput, ele => ele.length > 3)).toEqual(['hello', 'jefhsakjfksahf', 'world']);
-    expect(filter(strInput, ele => ele.length < 3)).toEqual(['hi', '10']);
-    expect(filter(strInput, ele => ele.includes('10'))).toEqual(['10']);
+    expect(strInput.myFilter(ele => ele.length > 3)).toEqual(['hello', 'jefhsakjfksahf', 'world']);
+    expect(strInput.myFilter(ele => ele.length < 3)).toEqual(['hi', '10']);
+    expect(strInput.myFilter(ele => ele.includes('10'))).toEqual(['10']);
 
-    expect(filter(strNumInput, (ele => {
+    expect(strNumInput.myFilter((ele => {
       if (typeof ele === 'string') return true;
     }))).toEqual(['hi', 'hello', 'jefhsakjfksahf', 'world']);
   });

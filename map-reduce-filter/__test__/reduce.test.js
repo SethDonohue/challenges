@@ -1,4 +1,4 @@
-const reduce = require('../reduce.js');
+const reduce = require('../map-reduce-filter');
 
 describe('REDUCE', () => {
   test('Applies a sum callback against an accumulator and each element in the int array from left to right to reduce the array to a single sum', () => {
@@ -6,9 +6,9 @@ describe('REDUCE', () => {
     const output = 210;
     const callback = ((acc, ele) => acc + ele);
 
-    expect(reduce(input, callback)).toEqual(output);
-    expect(reduce([10, 20, 30], callback)).toEqual(60);
-    expect(reduce([-100, 20, 30], callback)).toEqual(-50);
+    expect(input.myReduce(callback)).toEqual(output);
+    expect([10, 20, 30].myReduce(callback)).toEqual(60);
+    expect([-100, 20, 30].myReduce(callback)).toEqual(-50);
   });
 
   test('Applies a concat callback against an accumulator and each element in the string array from left to right to reduce the array to a single string', () => {
@@ -16,6 +16,6 @@ describe('REDUCE', () => {
     const output = 'abcdef';
     const callback = ((acc, ele) => acc + ele);
 
-    expect(reduce(input, callback)).toEqual(output);
+    expect(input.myReduce(callback)).toEqual(output);
   });
 });

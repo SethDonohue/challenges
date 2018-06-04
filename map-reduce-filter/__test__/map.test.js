@@ -1,4 +1,4 @@
-const map = require('../map.js');
+const Array = require('../map-reduce-filter');
 
 describe('MAP', () => {
   test('Performs the argument callback of adding 10 to each int in the array and returns a new array with correct changes', () => {
@@ -6,14 +6,14 @@ describe('MAP', () => {
     const output = [10, 20, 30, 40, 50, 110, -10];
     const callback = (element) => element + 10;
 
-    expect(map(input, callback)).toEqual(output);
+    expect(input.myMap(callback)).toEqual(output);
   });
-  test('Returns an error if first argument is not an array', () => {
-    const input = 'badInput';
-    const callback = (element) => element + 10;
+  // test('Returns an error if first argument is not an array', () => {
+  //   const input = 'badInput';
+  //   const callback = (element) => element + 10;
 
-    expect(() => map(input, callback)).toThrow();
-  });
+  //   expect(() => input.myMap(callback)).toThrow();
+  // });
 
   test('Performs the argument callback of adding a property to each element object array of objects and returns a new array with correct changes', () => {
     function MyObject(prop1) {
@@ -44,7 +44,7 @@ describe('MAP', () => {
       return result;
     };
 
-    expect(map(input, callback)).toEqual(output);
+    expect(input.myMap(callback)).toEqual(output);
   });
 });
 
