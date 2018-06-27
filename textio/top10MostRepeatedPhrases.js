@@ -1,72 +1,79 @@
-// Take - home Problem
+const mostRepeatedPhrases = (inputStr) => {
+  const noCommaStr = inputStr.replace(/,/g, '');
+  // Split Input into sentences
+  const sentenceArr = noCommaStr.split(/[.!?]/);
+  
+  const allWordsPhraseMap = {};
+  const nonRepeatPhraseMap = {};
 
-// Given a string representing a document, write a function which returns the top 10 most frequent repeated phrases.A phrase is a stretch of three to ten consecutive words and cannot span sentences.Omit a phrase if it is a subset of another, longer phrase, even if the shorter phrase occurs more frequently(for example, if “cool and collected” and “calm cool and collected” are repeated, do not include “cool and collected” in the returned set).A phrase is repeated if it is used two or more times.
+  // clean all the commas from the input
 
-//   We've provided an example input and output below, and encourage you to come up with your own as well to validate the code's behavior.
+  // find all the phrases in a sentence at least 3 words long
+  const sentencePhraseFinder = (sentenceStr) => {
+    // remove whitepsace as it interferes with future string comparison
+    const trimmedSentence = sentenceStr.trim();
+    const wordArr = trimmedSentence.split(' ');
 
-// Example input
+    for (let i = 0; i < wordArr.length - 2; i++) {
+      for (let j = i + 2; j < wordArr.length; j++) {
+        let phrase = `${wordArr[i]} `;
+        for (let k = i + 1; k <= j; k++) {
+          if (k === j) {
+            phrase = `${phrase}${wordArr[k]}`;
+          } else {
+            phrase = `${phrase}${wordArr[k]} `;
+          }
+        }
 
-// The quick brown fox jumped over the lazy dog.
-// The lazy dog, peeved to be labeled lazy, jumped over a snoring turtle.
-// In retaliation the quick brown fox jumped over ten snoring turtles.
-// Then the quick brown fox refueled with some ice cream.
-
-// Example output
-
-// ['the lazy dog', 'the quick brown fox jumped over']
-
-
-// find all the phrases in a sentence at least 3 words long
-const sentencePhraseFinder = (sentenceStr) => {
-  const sentenceArr = sentenceStr.split(' ');
-  const phraseMap = {};
-
-  for (let i = 0; i < sentenceArr.length - 2; i++) {
-    for (let j = i + 2; j < sentenceArr.length; j++) {
-      let tempStr = `${sentenceArr[i]} `;
-      for (let k = i + 1; k <= j; k++) {
-        tempStr = `${tempStr}${sentenceArr[k]} `;
+        // Keep track of what phrase we have seen and if we have seen it twice add to a non-repeating map to eliminate non-repeating phrases for future functions
+        if (!allWordsPhraseMap[phrase]) {
+          allWordsPhraseMap[phrase] = 1;
+        } else if (nonRepeatPhraseMap[phrase]) {
+          nonRepeatPhraseMap[phrase]++;
+        } else if (allWordsPhraseMap[phrase]) {
+          nonRepeatPhraseMap[phrase] = 2;
+        }
       }
-      if (phraseMap[tempStr]) {
-        phraseMap[tempStr]++;
-      } else {
-        phraseMap[tempStr] = 1;
+    }
+  };
+
+  // Check for comon phrases in eash sentence
+  for (let i = 0; i < sentenceArr.length; i++) {
+    sentencePhraseFinder(sentenceArr[i].toLowerCase());
+  }
+
+  console.log('non Repeat map', nonRepeatPhraseMap);
+
+  // In the top 10 repeated phrases, remove any phrase that is INCLUDED in another longer phrase
+  const phraseMapKeysArr = Object.keys(nonRepeatPhraseMap);
+  let result = {};
+
+  // Sort the keysArray so that it is easy to compare the longest element against the short ones.
+  phraseMapKeysArr.sort((a, b) => b.length - a.length);
+  console.log('Sorted Arr: ', phraseMapKeysArr);
+
+  // Check if the map is only one repeated phrase
+  if (phraseMapKeysArr.length < 2) {
+    result = nonRepeatPhraseMap;
+  } else {
+    for (let i = 0; i < phraseMapKeysArr.length; i++) {
+      result[phraseMapKeysArr[i]] = nonRepeatPhraseMap[phraseMapKeysArr[i]];
+      for (let j = i; j < phraseMapKeysArr.length; j++) {
+        if (!(i === j)) {
+          if ((phraseMapKeysArr[i].includes(phraseMapKeysArr[j]))) {
+            phraseMapKeysArr.splice(j, 1);
+            j--;
+          }
+        }
       }
     }
   }
-  return phraseMap;
+  console.log('Spliced Arr: ', phraseMapKeysArr);
+
+  return result;
 };
 
-const testStr = 'I am a big brown cow a big brown cow a big brown cow';
-const phrases = sentencePhraseFinder(testStr);
 
-// First remove non-repeated phrase
-const removeNonRepeats = (inputMap) => {
-  const newMap = {};
-  const keysArray = Object.keys(inputMap);
+const testInput = 'The quick brown fox jumped over the lazy dog with some ice cream. with some ice cream. The lazy dog, peeved to be labeled lazy, with some ice cream ,with some ice cream , with some ice cream, jumped over a snoring turtle? In retaliation the quick brown fox jumped over ten snoring turtles. Then the quick brown fox refueled with, some ice cream!';
 
-  for (let i = 0; i < keysArray.length; i++) {
-    if (inputMap[keysArray[i]] > 1) {
-      newMap[keysArray[i]] = inputMap[keysArray[i]];
-    }
-  }
-  return newMap;
-};
-
-const cleanedMap = removeNonRepeats(phrases);
-
-// In the top 10 repeated phrases, remove any phrase that is INCLUDED in another longer phrase
-const cleanedMapKeysArr = Object.keys(cleanedMap);
-const result = [];
-console.log(cleanedMapKeysArr);
-for (let i = 0; i < cleanedMapKeysArr.length; i++) {
-  for (let j = 0; j < cleanedMapKeysArr.length; j++) {
-    console.log('I str: ', cleanedMapKeysArr[i]);
-    console.log('J str: ', cleanedMapKeysArr[j]);
-    if (!cleanedMapKeysArr[i].includes(cleanedMapKeysArr[j])) {
-      result.push(cleanedMapKeysArr[i]);
-    } 
-  }
-}
-
-// console.log('RESULT: ', result);
+console.log(mostRepeatedPhrases(testInput));
